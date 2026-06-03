@@ -25,14 +25,17 @@ jobs:
         run: dotnet restore Activity11.TestStructureCi.slnx
 
       - name: Build solution
-        run: dotnet build Activity11.TestStructureCi.slnx --no-restore
+        run: dotnet build Activity11.TestStructureCi.slnx --configuration Release --no-restore
 
       - name: Install Playwright browsers
         working-directory: Activity11.TestStructureCi.Tests
         run: pwsh bin/Debug/net10.0/playwright.ps1 install --with-deps
 
       - name: Run UI Tests
-        run: dotnet test Activity11.TestStructureCi.slnx --no-build --logger "trx;LogFileName=test-results.trx" --collect:"XPlat Code Coverage"
+        run: |
+          dotnet test Activity11.TestStructureCi.slnx \
+           --no-build --logger "trx;LogFileName=test-results.trx" \
+           --collect:"XPlat Code Coverage"
 
       - name: Upload test artifacts
         if: always()
