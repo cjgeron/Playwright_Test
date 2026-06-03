@@ -41,7 +41,7 @@ jobs:
           name: playwright-artifacts
           path: |
             **/TestResults/*.trx
-            **/TestResults/**.xml
+            **/TestResults/**/*.xml
             **/artifacts/screenshots/**
             **/artifacts/videos/**
             **/artifacts/traces/**
