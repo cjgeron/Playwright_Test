@@ -1,0 +1,46 @@
+name: Playwright UI Merge Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+
+jobs:
+  ui-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v6.0.3
+
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v5.3.0
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Restore dependencies
+        run: dotnet restore Activity11.TestStructureCi.slnx
+
+      - name: Build solution
+        run: dotnet build Activity11.TestStructureCi.slnx --no-restore
+
+      - name: Install Playwright browsers
+        working-directory: Activity11.TestStructureCi.Tests
+        run: pwsh bin/Debug/net10.0/playwright.ps1 install --with-deps
+
+      - name: Run UI Tests
+        run: dotnet test Activity11.TestStructureCi.slnx --no-build --logger "trx;LogFileName=test-results.trx"
+
+      - name: Upload test artifacts
+        if: always()
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: playwright-artifacts
+          path: |
+            **/TestResults/*.trx
+            **/TestResults/**.xml
+            **/artifacts/screenshots/**
+            **/artifacts/videos/**
+            **/artifacts/traces/**
