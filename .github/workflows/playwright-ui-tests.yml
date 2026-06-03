@@ -33,8 +33,7 @@ jobs:
         run: pwsh bin/Debug/net10.0/playwright.ps1 install --with-deps
 
       - name: Run Playwright tests
-        run: dotnet test Activity11.TestStructureCi.slnx --no-build --logger
-        "trx;LogFileName=test-results.trx"
+        run: dotnet test Activity11.TestStructureCi.slnx --no-build --logger "trx;LogFileName=test-results.trx"
 
       - name: Upload test artifacts
         if: always()
