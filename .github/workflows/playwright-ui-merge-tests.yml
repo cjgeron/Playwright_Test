@@ -32,7 +32,7 @@ jobs:
         run: pwsh bin/Debug/net10.0/playwright.ps1 install --with-deps
 
       - name: Run UI Tests
-        run: dotnet test Activity11.TestStructureCi.slnx --no-build --logger "trx;LogFileName=test-results.trx"
+        run: dotnet test Activity11.TestStructureCi.slnx --no-build --logger "trx;LogFileName=test-results.trx" --collect:"XPlat Code Coverage"
 
       - name: Upload test artifacts
         if: always()
